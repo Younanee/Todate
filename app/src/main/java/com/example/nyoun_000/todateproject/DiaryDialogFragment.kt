@@ -1,11 +1,11 @@
 package com.example.nyoun_000.todateproject
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
+import kotlinx.android.synthetic.main.dialog_diary.view.*
 
 /**
  * Created by nyoun_000 on 2018-01-03.
@@ -21,18 +21,30 @@ class DiaryDialogFragment : DialogFragment() {
             mParam2 = arguments.getString(ARG_PARAM2)
         }
     }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder : AlertDialog.Builder = AlertDialog.Builder(activity)
         val inflater : LayoutInflater = activity.layoutInflater
-        //infla
-        builder.setView(inflater.inflate(R.layout.dialog_diary, null))
-        builder.setPositiveButton("닫기", DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel()
-                })
+        val view = inflater.inflate(R.layout.dialog_diary, null)
+        //Here, use findViewId()!!!
+        view.tv_diary_title.tex
+
+
+        builder.setView(view)
+        builder.setTitle(mParam1.toString())
+        builder.setPositiveButton("닫기", { dialog, which -> dialog.cancel()})
+        builder.setNegativeButton("수정하기", { dialog, which ->  })
 
         return builder.create()
     }
+//
+//    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        val date = view!!.findViewById<TextView>(R.id.tv_diary_date)
+//        date.text = "hahaha!!!"
+//
+//    }
+
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +66,7 @@ class DiaryDialogFragment : DialogFragment() {
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)
             fragment.arguments = args
+
             return fragment
         }
     }

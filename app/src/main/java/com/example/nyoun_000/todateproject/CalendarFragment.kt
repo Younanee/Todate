@@ -43,6 +43,8 @@ class CalendarFragment : Fragment() {
         mCalendar.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
 
             DiaryDialogFragment.newInstance(year.toString() + ". " + (month+1).toString() + ". " + dayOfMonth.toString(),"").show(childFragmentManager, "MyDiaryDialogFragment")
+
+
             tv_testbox.setText(year.toString() + ". " + (month+1).toString() + ". " + dayOfMonth.toString())
         })
     }
