@@ -25,8 +25,9 @@ class DiaryDialogFragment : DialogFragment() {
         val builder : AlertDialog.Builder = AlertDialog.Builder(activity)
         val inflater : LayoutInflater = activity.layoutInflater
         val view = inflater.inflate(R.layout.dialog_diary, null)
+
         //Here, use findViewId()!!!
-        view.tv_diary_title.tex
+        view.tv_diary_date.text = mParam1.toString()
 
 
         builder.setView(view)
@@ -36,14 +37,6 @@ class DiaryDialogFragment : DialogFragment() {
 
         return builder.create()
     }
-//
-//    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val date = view!!.findViewById<TextView>(R.id.tv_diary_date)
-//        date.text = "hahaha!!!"
-//
-//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

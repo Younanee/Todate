@@ -8,10 +8,22 @@
     tools:context="com.example.nyoun_000.todateproject.InitActivity"
     tools:showIn="@layout/app_bar_init">
 
-    <RelativeLayout
-        android:id="@+id/place_mFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/bt_create_diary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="일기쓰기 테스트" />
+
+        <RelativeLayout
+            android:id="@+id/place_mFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
