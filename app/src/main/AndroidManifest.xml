@@ -21,7 +21,8 @@
             android:label="@string/title_activity_init"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Diary.Main2Activity" />
-        <activity android:name=".Diary.WriteDiaryActivity"></activity>
+        <activity android:name=".Diary.WriteDiaryActivity" />
+        <activity android:name=".Diary.DiaryListActivity"></activity>
     </application>
 
 </manifest>

@@ -22,6 +22,10 @@ data class DiaryData(
         val DATE : String = "date"
         val WEATHER : String = "weather"
         val CONTENT : String = "content"
+        val YEAR : String = "year"
+        val MONTH : String = "month"
+        val DAY : String = "day"
+
     }
 
 }

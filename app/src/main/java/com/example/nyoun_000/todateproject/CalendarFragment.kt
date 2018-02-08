@@ -40,8 +40,10 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         val mCalendar = view?.findViewById<View>(R.id.mCalendar) as CalendarView
-        mCalendar.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
 
+
+
+        mCalendar.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
             DiaryDialogFragment.newInstance(year.toString() + ". " + (month+1).toString() + ". " + dayOfMonth.toString(),"").show(childFragmentManager, "MyDiaryDialogFragment")
 
 

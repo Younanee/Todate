@@ -2,6 +2,7 @@ package com.example.nyoun_000.todateproject.DB
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.jetbrains.anko.db.*
@@ -17,6 +18,15 @@ object DBManagerDiary {
             mDBHandler = DBHandlerDiary(context)
         }
     }
+
+    fun getAllDiaryWithCursor() : Cursor =
+            mDBHandler?.readableDatabase!!.query(DiaryData.DiaryTable.TABLENAME,
+                    arrayOf(DiaryData.DiaryTable._ID,
+                            DiaryData.DiaryTable.DATE,
+                            DiaryData.DiaryTable.WEATHER,
+                            DiaryData.DiaryTable.TITLE,
+                            DiaryData.DiaryTable.CONTENT),
+                    null,null,null,null,DiaryData.DiaryTable.WEATHER)
 
     fun addDiaryData(data : DiaryData){
         val cv = ContentValues()
@@ -42,9 +52,11 @@ class DBHandlerDiary(context: Context) : SQLiteOpenHelper(context, DiaryData.DB_
                 true,
                 Pair(DiaryData.DiaryTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(DiaryData.DiaryTable.TITLE, TEXT),
-                Pair(DiaryData.DiaryTable.DATE, TEXT),
                 Pair(DiaryData.DiaryTable.WEATHER, TEXT),
-                Pair(DiaryData.DiaryTable.CONTENT, TEXT)
+                Pair(DiaryData.DiaryTable.CONTENT, TEXT),
+                Pair(DiaryData.DiaryTable.YEAR, INTEGER),
+                Pair(DiaryData.DiaryTable.MONTH, INTEGER),
+                Pair(DiaryData.DiaryTable.DAY, INTEGER)
         )
     }
 

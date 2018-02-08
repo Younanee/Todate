@@ -9,10 +9,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.nyoun_000.todateproject.Diary.DiaryListActivity
 import com.example.nyoun_000.todateproject.Diary.WriteDiaryActivity
 import kotlinx.android.synthetic.main.activity_init.*
 import kotlinx.android.synthetic.main.app_bar_init.*
-import kotlinx.android.synthetic.main.content_init.*
 
 class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,6 +20,9 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_init)
         setSupportActionBar(toolbar)
+        //달력달기
+
+
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -33,14 +36,14 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
         //Fragment 셋팅
-        supportFragmentManager.beginTransaction().replace(R.id.place_mFragment, CalendarFragment.newInstance("","")).commit()
+        //supportFragmentManager.beginTransaction().replace(R.id.place_mFragment, CalendarFragment.newInstance("","")).commit()
 
 
-        //디비에 데이터넣는 작업 테스트 이동
-        bt_create_diary.setOnClickListener {
-            val intent = Intent(this, WriteDiaryActivity::class.java)
-            startActivity(intent)
-        }
+//        //디비에 데이터넣는 작업 테스트 이동
+//        bt_create_diary.setOnClickListener {
+//            val intent = Intent(this, WriteDiaryActivity::class.java)
+//            startActivity(intent)
+//        }
 
 
     }
@@ -80,6 +83,8 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_slideshow -> {
+                val intent = Intent(this, DiaryListActivity::class.java)
+                startActivity(intent)
 
             }
             R.id.nav_manage -> {
