@@ -12,8 +12,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.nyoun_000.todateproject.Decorator.EventDecorator
-import com.example.nyoun_000.todateproject.Decorator.HighlightWeekendsDecorator
-import com.example.nyoun_000.todateproject.Decorator.MySelectorDecorator
 import com.example.nyoun_000.todateproject.Decorator.OneDayDecorator
 import com.example.nyoun_000.todateproject.Diary.DiaryListActivity
 import com.example.nyoun_000.todateproject.Diary.WriteDiaryActivity
@@ -40,8 +38,12 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         calendarView = findViewById(R.id.calendarView)
         calendarView.setSelectedDate(Calendar.getInstance().time)
 
-        calendarView.addDecorators(MySelectorDecorator(this), HighlightWeekendsDecorator(), oneDayDecorator)
+        calendarView.addDecorators(oneDayDecorator)
         ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor())
+
+        calendarView.setOnDateChangedListener { widget, date, selected ->
+            DiaryDialogFragment.newInstance("","").show(supportFragmentManager, "MyDiaryDialogFragment")
+        }
 
 
         //네비게이션 부분
@@ -137,13 +139,20 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             val calendar = Calendar.getInstance()
-            calendar.add(Calendar.MONTH, -2)
+            //calendar.add(Calendar.MONTH, -2) //현재 날짜를 2달 전으로 이동
             val dates = ArrayList<CalendarDay>()
-            for (i in 0..29) {
-                val day = CalendarDay.from(calendar)
-                dates.add(day)
-                calendar.add(Calendar.DATE, 5)
-            }
+//            for (i in 0..29) {
+//                val day = CalendarDay.from(calendar) //현재 날짜를 day변수에 넣움
+//                dates.add(day) //해당 day에 점찍음
+//                calendar.add(Calendar.DATE, 5)// 해당 day에 5만큼 일수 더함 ... 반복!!!
+//            }
+            val day = CalendarDay.from(calendar)
+            dates.add(day)
+
+            val day2 = CalendarDay.from(2018,1,11)
+            dates.add(day2)
+
+
 
             return dates
         }

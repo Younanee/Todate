@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:mcv_showOtherDates="defaults"
-            app:mcv_selectionColor="#F0FFFF"
+            app:mcv_selectionColor="#DC143C"
             app:mcv_titleAnimationOrientation="horizontal"
             />
 
