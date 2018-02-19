@@ -8,7 +8,10 @@ data class DiaryData(
                      val title : String = "No title",
                      val date : String = "No date",
                      val weather : String = "No weather",
-                     val content : String = "No content"
+                     val content : String = "No content",
+                     val year : String = "No year",
+                     val month : String = "No month",
+                     val day : String = "No day"
                      ){
     companion object {
         val DB_NAME = "Todate.db"

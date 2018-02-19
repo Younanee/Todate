@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
+import com.example.nyoun_000.todateproject.DB.DBManagerDiary
 import kotlinx.android.synthetic.main.dialog_diary.view.*
 
 /**
@@ -13,6 +14,10 @@ import kotlinx.android.synthetic.main.dialog_diary.view.*
 class DiaryDialogFragment : DialogFragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
+
+    init {
+        DBManagerDiary.init(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +33,8 @@ class DiaryDialogFragment : DialogFragment() {
 
         //Here, use findViewId()!!!
         view.tv_diary_date.text = mParam1.toString()
-
+        // ID값 파라매터에 있는거 받아서
+        // 다이얼로그에 일기 내용 올리기
 
         builder.setView(view)
         builder.setTitle(mParam1.toString())
@@ -64,4 +70,8 @@ class DiaryDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        DBManagerDiary.db_close()
+    }
 }

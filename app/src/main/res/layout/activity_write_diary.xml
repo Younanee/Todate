@@ -24,12 +24,6 @@
                 android:hint="제목" />
 
             <EditText
-                android:id="@+id/et_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="날짜" />
-
-            <EditText
                 android:id="@+id/et_weather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

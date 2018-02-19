@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.nyoun_000.todateproject.DB.DBManagerDiary
 import com.example.nyoun_000.todateproject.Decorator.EventDecorator
 import com.example.nyoun_000.todateproject.Decorator.OneDayDecorator
 import com.example.nyoun_000.todateproject.Diary.DiaryListActivity
@@ -20,12 +21,17 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_init.*
 import kotlinx.android.synthetic.main.app_bar_init.*
+import org.jetbrains.anko.toast
 import java.util.*
 import java.util.concurrent.Executors
 
 
 class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
     lateinit var calendarView : MaterialCalendarView
+    init {
+        DBManagerDiary.init(this)
+    }
+
 
     companion object {
         val oneDayDecorator = OneDayDecorator()
@@ -34,15 +40,32 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_init)
         setSupportActionBar(toolbar)
+
         //달력달기
         calendarView = findViewById(R.id.calendarView)
         calendarView.setSelectedDate(Calendar.getInstance().time)
-
         calendarView.addDecorators(oneDayDecorator)
         ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor())
 
+        //달력 날짜 클릭 리스너
         calendarView.setOnDateChangedListener { widget, date, selected ->
-            DiaryDialogFragment.newInstance("","").show(supportFragmentManager, "MyDiaryDialogFragment")
+            //date에 대한 디비에 데이터가 있으면 일기보기
+            var selectedDate : String = date.year.toString() + date.month.toString() + date.day.toString()
+            var cursor = DBManagerDiary.getDiaryOfSelectedDateWithCursor(selectedDate)
+            if (cursor.count != 0) {
+                toast("커서 있음, 갯수 : " + cursor.count + ", 다이어로그 일기 보기 띄움")
+                cursor.moveToFirst()
+                var selectedID = cursor.getString(0).toString()
+                DiaryDialogFragment.newInstance(selectedID,"").show(supportFragmentManager, "MyDiaryDialogFragment")
+            } else {
+                toast("커서 없음, 일기쓰기로 이동")
+                val intent = Intent(this, WriteDiaryActivity::class.java)
+                intent.putExtra("selectedYear", date.year.toString())
+                intent.putExtra("selectedMonth", date.month.toString())
+                intent.putExtra("selectedDay", date.day.toString())
+                startActivity(intent)
+            }
+            //데이터가 없으면 일기쓰기
         }
 
 
@@ -132,12 +155,13 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private inner class ApiSimulator : AsyncTask<Void, Void, List<CalendarDay>>() {
 
         override fun doInBackground(vararg voids: Void): List<CalendarDay> {
-            try {
-                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
+//            try {
+//                Thread.sleep(100)
+//            } catch (e: InterruptedException) {
+//                e.printStackTrace()
+//            }
 
+            //달력에 점 찍는 로직
             val calendar = Calendar.getInstance()
             //calendar.add(Calendar.MONTH, -2) //현재 날짜를 2달 전으로 이동
             val dates = ArrayList<CalendarDay>()
@@ -168,4 +192,8 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        DBManagerDiary.db_close()
+    }
 }

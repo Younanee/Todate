@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.jetbrains.anko.db.*
+import java.util.*
 
 /**
  * Created by nyoun_000 on 2018-01-18.
@@ -19,6 +20,17 @@ object DBManagerDiary {
         }
     }
 
+    fun getDiaryOfSelectedDateWithCursor(date: String) : Cursor =
+            mDBHandler?.readableDatabase!!.query(DiaryData.DiaryTable.TABLENAME,
+                    arrayOf(DiaryData.DiaryTable._ID,
+                            DiaryData.DiaryTable.DATE,
+                            DiaryData.DiaryTable.YEAR,
+                            DiaryData.DiaryTable.MONTH,
+                            DiaryData.DiaryTable.DAY),
+                    DiaryData.DiaryTable.DATE + "=?", arrayOf(date), null, null, null)
+
+
+
     fun getAllDiaryWithCursor() : Cursor =
             mDBHandler?.readableDatabase!!.query(DiaryData.DiaryTable.TABLENAME,
                     arrayOf(DiaryData.DiaryTable._ID,
@@ -30,10 +42,13 @@ object DBManagerDiary {
 
     fun addDiaryData(data : DiaryData){
         val cv = ContentValues()
-        cv.put(DiaryData.DiaryTable.DATE, data.date)
         cv.put(DiaryData.DiaryTable.TITLE, data.title)
+        cv.put(DiaryData.DiaryTable.DATE, data.date)
         cv.put(DiaryData.DiaryTable.WEATHER, data.weather)
         cv.put(DiaryData.DiaryTable.CONTENT, data.content)
+        cv.put(DiaryData.DiaryTable.YEAR, data.year)
+        cv.put(DiaryData.DiaryTable.MONTH, data.month)
+        cv.put(DiaryData.DiaryTable.DAY, data.day)
         mDBHandler?.writableDatabase.use {
             mDBHandler?.writableDatabase?.insert(
                     DiaryData.DiaryTable.TABLENAME , null, cv)
@@ -52,15 +67,17 @@ class DBHandlerDiary(context: Context) : SQLiteOpenHelper(context, DiaryData.DB_
                 true,
                 Pair(DiaryData.DiaryTable._ID, INTEGER + PRIMARY_KEY),
                 Pair(DiaryData.DiaryTable.TITLE, TEXT),
+                Pair(DiaryData.DiaryTable.DATE, TEXT),
                 Pair(DiaryData.DiaryTable.WEATHER, TEXT),
                 Pair(DiaryData.DiaryTable.CONTENT, TEXT),
-                Pair(DiaryData.DiaryTable.YEAR, INTEGER),
-                Pair(DiaryData.DiaryTable.MONTH, INTEGER),
-                Pair(DiaryData.DiaryTable.DAY, INTEGER)
+                Pair(DiaryData.DiaryTable.YEAR, TEXT),
+                Pair(DiaryData.DiaryTable.MONTH, TEXT),
+                Pair(DiaryData.DiaryTable.DAY, TEXT)
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(DiaryData.DiaryTable.TABLENAME, true)
+        onCreate(db)
     }
 }

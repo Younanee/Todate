@@ -17,14 +17,20 @@ class WriteDiaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_diary)
 
-
+        var intent = intent
+        var selectedYear = intent.extras.getString("selectedYear")
+        var selectedMonth = intent.extras.getString("selectedMonth")
+        var selectedDay = intent.extras.getString("selectedDay")
 
         bt_submit.setOnClickListener {
             val data = DiaryData(
                     et_title.text.toString(),
-                    et_date.text.toString(),
+                    selectedYear+selectedMonth+selectedDay,
                     et_weather.text.toString(),
-                    et_content.text.toString())
+                    et_content.text.toString(),
+                    selectedYear,
+                    selectedMonth,
+                    selectedDay)
             DBManagerDiary.addDiaryData(data)
             finish()
         }
