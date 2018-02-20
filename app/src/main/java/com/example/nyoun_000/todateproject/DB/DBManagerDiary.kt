@@ -32,6 +32,13 @@ object DBManagerDiary {
                             DiaryData.DiaryTable.DAY),
                     DiaryData.DiaryTable.DATE + "=?", arrayOf(date), null, null, null)
 
+    fun getAllDateWithCursor() : Cursor =
+            mDBHandler?.readableDatabase!!.query(DiaryData.DiaryTable.TABLENAME,
+                    arrayOf(DiaryData.DiaryTable._ID,
+                            DiaryData.DiaryTable.YEAR,
+                            DiaryData.DiaryTable.MONTH,
+                            DiaryData.DiaryTable.DAY),
+                    null,null,null,null, DiaryData.DiaryTable._ID + " desc")
 
 
     fun getAllDiaryWithCursor() : Cursor =
@@ -41,7 +48,7 @@ object DBManagerDiary {
                             DiaryData.DiaryTable.WEATHER,
                             DiaryData.DiaryTable.TITLE,
                             DiaryData.DiaryTable.CONTENT),
-                    null,null,null,null,DiaryData.DiaryTable.WEATHER)
+                    null,null,null,null, null)
 
     fun addDiaryData(data : DiaryData){
         val cv = ContentValues()
