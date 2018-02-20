@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.app_bar_init.*
 import org.jetbrains.anko.toast
 import java.util.*
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 
 class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
@@ -55,8 +56,13 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (cursor.count != 0) {
                 toast("커서 있음, 갯수 : " + cursor.count + ", 다이어로그 일기 보기 띄움")
                 cursor.moveToFirst()
-                var selectedID = cursor.getString(0).toString()
-                DiaryDialogFragment.newInstance(selectedID,"").show(supportFragmentManager, "MyDiaryDialogFragment")
+                var selectedDate = date.year.toString() + "년 "+ (date.month+1).toString() +"월 "+ date.day.toString() + "일"
+                var data : ArrayList<String>
+                        = arrayListOf(cursor.getString(1).toString(),
+                        cursor.getString(2).toString(),
+                        cursor.getString(3).toString(),
+                        cursor.getString(4).toString())
+                DiaryDialogFragment.newInstance(selectedDate, data).show(supportFragmentManager, "MyDiaryDialogFragment")
             } else {
                 toast("커서 없음, 일기쓰기로 이동")
                 val intent = Intent(this, WriteDiaryActivity::class.java)

@@ -13,32 +13,35 @@ import kotlinx.android.synthetic.main.dialog_diary.view.*
  */
 class DiaryDialogFragment : DialogFragment() {
     private var mParam1: String? = null
-    private var mParam2: String? = null
+    private var mParam2: ArrayList<String>? = null
 
-    init {
-        DBManagerDiary.init(context)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
+            mParam2 = arguments.getStringArrayList(ARG_PARAM2)
         }
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder : AlertDialog.Builder = AlertDialog.Builder(activity)
         val inflater : LayoutInflater = activity.layoutInflater
         val view = inflater.inflate(R.layout.dialog_diary, null)
+        //DBManagerDiary.init(activity) //디비를 굳이 열어야할까?? 그냥 매개변수를 통해 데이터 전달받아보기.
 
         //Here, use findViewId()!!!
-        view.tv_diary_date.text = mParam1.toString()
-        // ID값 파라매터에 있는거 받아서
-        // 다이얼로그에 일기 내용 올리기
+
+        // mParam1 값은 xxxx년 xx월 xx일
+        // mParam2 값들 = [0] 제목 , [1] 날짜 , [2] 날씨 , [3] 내용
 
         builder.setView(view)
-        builder.setTitle(mParam1.toString())
+        builder.setTitle(mParam2!![0])
+        view.tv_diary_date.text = mParam1
+        view.tv_diary_weather.text = mParam2!![2]
+        view.tv_diary_content.text = mParam2!![3]
         builder.setPositiveButton("닫기", { dialog, which -> dialog.cancel()})
+        //To Do 사진 업로드 방법 알기.
+        //To Do 수정기능 넣기!
         builder.setNegativeButton("수정하기", { dialog, which ->  })
 
         return builder.create()
@@ -59,11 +62,11 @@ class DiaryDialogFragment : DialogFragment() {
          * @return A new instance of fragment CalendarFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): DialogFragment {
+        fun newInstance(param1: String, param2: ArrayList<String>): DialogFragment {
             val fragment = DiaryDialogFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putStringArrayList(ARG_PARAM2, param2)
             fragment.arguments = args
 
             return fragment

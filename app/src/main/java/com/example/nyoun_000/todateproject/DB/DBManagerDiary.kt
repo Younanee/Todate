@@ -23,7 +23,10 @@ object DBManagerDiary {
     fun getDiaryOfSelectedDateWithCursor(date: String) : Cursor =
             mDBHandler?.readableDatabase!!.query(DiaryData.DiaryTable.TABLENAME,
                     arrayOf(DiaryData.DiaryTable._ID,
+                            DiaryData.DiaryTable.TITLE,
                             DiaryData.DiaryTable.DATE,
+                            DiaryData.DiaryTable.WEATHER,
+                            DiaryData.DiaryTable.CONTENT,
                             DiaryData.DiaryTable.YEAR,
                             DiaryData.DiaryTable.MONTH,
                             DiaryData.DiaryTable.DAY),

@@ -11,8 +11,6 @@ class WriteDiaryActivity : AppCompatActivity() {
     init {
         DBManagerDiary.init(this)
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_diary)
