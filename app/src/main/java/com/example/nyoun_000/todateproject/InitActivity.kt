@@ -1,6 +1,5 @@
 package com.example.nyoun_000.todateproject
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
@@ -23,13 +22,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import kotlinx.android.synthetic.main.activity_init.*
 import kotlinx.android.synthetic.main.app_bar_init.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.appcompat.v7.alertDialogLayout
-import org.jetbrains.anko.db.INTEGER
-import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.toast
-import java.util.*
+import org.jetbrains.anko.intentFor
 import java.util.concurrent.Executors
-import kotlin.collections.ArrayList
 
 
 class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
@@ -59,7 +53,6 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var selectedDate : String = date.year.toString() + date.month.toString() + date.day.toString()
             var cursor = DBManagerDiary.getDiaryOfSelectedDateWithCursor(selectedDate)
             if (cursor.count != 0) {
-                toast("커서 있음, 갯수 : " + cursor.count + ", 다이어로그 일기 보기 띄움")
                 cursor.moveToFirst()
                 var selectedDate = date.year.toString() + "년 "+ (date.month+1).toString() +"월 "+ date.day.toString() + "일"
                 var data : ArrayList<String>
@@ -68,27 +61,21 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         cursor.getString(3).toString(),
                         cursor.getString(4).toString())
                 DiaryDialogFragment.newInstance(selectedDate, data).show(supportFragmentManager, "MyDiaryDialogFragment")
+                //anko alert로 바꿔보기!!!
             } else {
                 alert ("일기가 아직 없어요!!!"){
                     title = "일기를 쓰시겠습니까?~!"
                     positiveButton("쓸래요~!", {
-                        val intent = Intent(applicationContext, WriteDiaryActivity::class.java)
-                        intent.putExtra("selectedYear", date.year.toString())
-                        intent.putExtra("selectedMonth", date.month.toString())
-                        intent.putExtra("selectedDay", date.day.toString())
-                        startActivity(intent)
+                        startActivity(intentFor<WriteDiaryActivity>(
+                                "selectedYear" to date.year.toString(),
+                                "selectedMonth" to date.month.toString(),
+                                "selectedDay" to date.day.toString()))
                     })
                     negativeButton("안쓸래요~!", {
                         dialog -> dialog.cancel()
                     })
                 }.show()
-//                val intent = Intent(this, WriteDiaryActivity::class.java)
-//                intent.putExtra("selectedYear", date.year.toString())
-//                intent.putExtra("selectedMonth", date.month.toString())
-//                intent.putExtra("selectedDay", date.day.toString())
-//                startActivity(intent)
             }
-            //데이터가 없으면 일기쓰기
         }
 
 
@@ -173,31 +160,24 @@ class InitActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private inner class ApiSimulator : AsyncTask<Void, Void, List<CalendarDay>>() {
 
         override fun doInBackground(vararg voids: Void): List<CalendarDay> {
-//            try {
-//                Thread.sleep(100)
-//            } catch (e: InterruptedException) {
-//                e.printStackTrace()
-//            }
+            try {
+                Thread.sleep(3)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
             //달력에 점 찍는 로직
-            val calendar = Calendar.getInstance()
-            //calendar.add(Calendar.MONTH, -2) //현재 날짜를 2달 전으로 이동
             val dates = ArrayList<CalendarDay>()
-//            for (i in 0..29) {
-//                val day = CalendarDay.from(calendar) //현재 날짜를 day변수에 넣움
-//                dates.add(day) //해당 day에 점찍음
-//                calendar.add(Calendar.DATE, 5)// 해당 day에 5만큼 일수 더함 ... 반복!!!
-//            }
-
             var day : CalendarDay
-
             //모든 일기 캘린더에 점찍기
             var cursor = DBManagerDiary.getAllDateWithCursor()
-            if(cursor.moveToFirst()){
-                do {
-                    day = CalendarDay.from(cursor.getString(1).toInt(), cursor.getString(2).toInt(), cursor.getString(3).toInt())
-                    dates.add(day)
-                    cursor.moveToNext()
-                } while (!cursor.isLast)
+            if(cursor.count != 0){
+                if (cursor.moveToFirst()){
+                    while(!cursor.isAfterLast){
+                        day = CalendarDay.from(cursor.getString(1).toInt(), cursor.getString(2).toInt(), cursor.getString(3).toInt())
+                        dates.add(day)
+                        cursor.moveToNext()
+                    }
+                }
             }
 
 

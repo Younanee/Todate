@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Todate.iml" filepath="$PROJECT_DIR$/Todate.iml" />
+      <module fileurl="file://C:\andProject\TodateProject\Todate.iml" filepath="C:\andProject\TodateProject\Todate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TodateProject.iml" filepath="$PROJECT_DIR$/TodateProject.iml" />
       <module fileurl="file://D:\Android Project\Todate\TodateProject.iml" filepath="D:\Android Project\Todate\TodateProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
